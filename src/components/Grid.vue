@@ -13,7 +13,7 @@
       :key="`cell-${col - 1},${row - 1}`"
       :data-x="col - 1"
       :data-y="row - 1"
-      :class="{'was-active': cell({x: [col - 1], y:[row - 1]}).wasActive,'cell-active': cell({x: [col - 1], y:[row - 1]}).isActive}"
+      :class="{'was-active': cells[col - 1][row - 1].wasActive,'cell-active': cells[col - 1][row - 1].isActive}"
       :style="cellStyle(col - 1, row - 1)"></div>
     </div>
   </div>
@@ -32,7 +32,7 @@ export default {
   computed: {
     ... mapGetters([ 
       'board',
-      'cell'
+      'cells'
     ]),
   },
   methods: {

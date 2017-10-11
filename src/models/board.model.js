@@ -4,26 +4,20 @@ export default class Board {
   /**
    */
   constructor(props = {}) {
-    this.width = props['width'] || 640;
-    this.height = props['height'] || 480;
-    this.cellSize = props['cellSize'] || 20;
+    this.width = props['width'] || 720;
+    this.height = 360;
+    this.cellSize = 18;
     this.columns = ~~(this.width / this.cellSize);
     this.rows = ~~(this.height / this.cellSize);
-
-    this.cellSizeMax = ~~(this.width / 10);
-    this.cellSizeMin = ~~(this.width / 40);
-    this.widthMax = props['widthMax'] || 1280;
-    this.widthMin = 300;
-    this.heightMax = this.widthMax;
-    this.heightMin = this.widthMin;
+    this.widthMax = props['widthMax'] ? Math.min(720, props['widthMax']) : 720;
+    this.widthMin = 360;
   }
 
   /**
    * Automatically adjust all sizes
    */
   autoAdjust() {
-    this.adjustBoardSize();
-    this.adjustCellsSize();
+    this.adjustBoardWidth();
     this.adjustGrid();
   }
 
@@ -31,16 +25,8 @@ export default class Board {
    * re-evaluate board width and/or height
    * when the screen dimensions changes
    */
-  adjustBoardSize() {
+  adjustBoardWidth() {
     this.width = Math.max(this.widthMin, Math.min(this.width, this.widthMax));
-    this.height = Math.max(this.heightMin, Math.min(this.height, this.heightMax));
-  }
-
-  /**
-   * re-evaluate cells sizes when the board width and/or height changes
-   */
-  adjustCellsSize() {
-    this.cellSize = Math.max(this.cellSizeMin, Math.min(this.cellSize, this.cellSizeMax));
   }
 
   /**

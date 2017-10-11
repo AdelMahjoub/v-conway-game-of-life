@@ -4,6 +4,8 @@ import Vuex from 'vuex';
 import Board from '../models/board.model';
 import Cell from '../models/cell.model';
 
+import { getNeighbours, cloneCells, nextCycle, nextCycleIsDifferent } from './utils';
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -116,6 +118,27 @@ const store = new Vuex.Store({
     clearCells: context => {
       context.commit('clearTimer');
       context.commit('clearCells');
+    },
+    play: context => {
+      if(!context.state.timerId) {
+        let timer = setInterval(() => {
+          const next = nextCycle(context.state.cells)
+          if(nextCycleIsDifferent(context.state.cells, next)) {
+            context.commit('setCells', next);
+            context.commit('incrementCycles');
+          } else {
+            clearInterval(timer);
+            timer = null
+            context.commit('clearTimer');
+          }
+        }, ~~(1000/30));
+        context.commit('setTimer', timer);
+      }
+    },
+    stop: context => {
+      if(context.state.timerId) {
+        context.commit('clearTimer');
+      }
     }
   }
 });
