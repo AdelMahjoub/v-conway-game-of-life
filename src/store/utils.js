@@ -49,10 +49,12 @@ export function nextCycle(currentCycle) {
             nextMatrix[x][y].isActive = false;
             nextMatrix[x][y].wasActive = true;
           }
+          nextMatrix[x][y].isNewBorn = false;
           break;
         case 0:
           if(cellFate === 3) {
             nextMatrix[x][y].isActive = true;
+            nextMatrix[x][y].isNewBorn = true;
           }
           nextMatrix[x][y].wasActive = false;
           break;

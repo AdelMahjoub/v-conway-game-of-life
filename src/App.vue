@@ -1,23 +1,33 @@
 <template>
   <div id="app">
-    <toolbar></toolbar>
-    <cycle-monitor></cycle-monitor>
-    <grid></grid>
+    <navbar></navbar>
+    <div class="section">
+      <div class="container is-fluid">
+        <toolbar></toolbar>
+        <grid></grid>
+        <cycle-monitor></cycle-monitor>
+      </div>
+    </div>
+    <app-footer></app-footer>
   </div>
 </template>
 
 
 <script>
+import Navbar from './components/Navbar';
 import Toolbar from './components/Toolbar';
 import Grid from './components/Grid';
 import CycleMonitor from './components/CycleMonitor';
+import AppFooter from './components/AppFooter';
 
 export default {
   name: 'app',
   components: {
     Toolbar,
     Grid,
-    CycleMonitor
+    CycleMonitor,
+    Navbar,
+    AppFooter
   }
 }
 </script>

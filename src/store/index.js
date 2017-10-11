@@ -14,7 +14,8 @@ const store = new Vuex.Store({
     board: new Board(),
     cells: (new Board()).generateCells(),
     cycles: 0,
-    timerId: null
+    timerId: null,
+    fps: 15
   },
   getters: {
     board: state => {
@@ -22,9 +23,6 @@ const store = new Vuex.Store({
     },
     cells: state => {
       return state.cells
-    },
-    cell: state => ({x, y}) => {
-      return state.cells[x][y];
     },
     timerId: state => {
       return state.timerId;
@@ -43,6 +41,17 @@ const store = new Vuex.Store({
           }, 0)
       )
     },
+    birth: state => {
+      return (
+        state.cells
+          .reduce((a, b) => {
+            return a.concat(b);
+          }, [])
+          .reduce((a, b) => {
+            return a + Number(b.isNewBorn);
+          }, 0)
+      )
+    },
     death: state => {
       return (
         state.cells
@@ -53,6 +62,9 @@ const store = new Vuex.Store({
             return a + Number(b.wasActive);
           }, 0)
       )
+    },
+    fps: state => {
+      return state.fps;
     }
   },
   mutations: {
@@ -75,6 +87,9 @@ const store = new Vuex.Store({
     },
     setCells: (state, cells) => {
       state.cells = cells;
+    },
+    setFps: (state, fps) => {
+      state.fps = fps;
     },
     setTimer: (state, id) => {
       state.timerId = id;
@@ -106,6 +121,9 @@ const store = new Vuex.Store({
     setCells: (context, cells) => {
       context.commit('setCells', cells)
     },
+    setFps: (context, fps) => {
+      context.commit('setFps', fps);
+    },
     setTimer: (context, id) => {
       context.commit('setTimer', id);
     },
@@ -131,7 +149,7 @@ const store = new Vuex.Store({
             timer = null
             context.commit('clearTimer');
           }
-        }, ~~(1000/30));
+        }, ~~(1000/context.state.fps));
         context.commit('setTimer', timer);
       }
     },
