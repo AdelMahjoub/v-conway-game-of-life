@@ -25,7 +25,7 @@
           <div class="field has-text-centered">
             <label class="label is-small">Active</label>
             <p class="control">
-              <input :disabled="timerId" type="color" v-model="activeColor">
+              <input type="color" v-model="activeColor">
             </p>
           </div>
         </div>
@@ -33,7 +33,7 @@
           <div class="field has-text-centered">
             <label class="label is-small">Death</label>
             <p class="control">
-              <input :disabled="timerId" type="color" v-model="deathColor">
+              <input type="color" v-model="deathColor">
             </p>
           </div>
         </div>
@@ -41,14 +41,14 @@
           <div class="field has-text-centered">
             <label class="label is-small">Born</label>
             <p class="control">
-              <input :disabled="timerId" type="color" v-model="newBornColor">
+              <input type="color" v-model="newBornColor">
             </p>
           </div>
         </div>
     </div>
     <hr>
-    <div class="columns">
-      <div class="column is-8 is-offset-2">
+    <div class="level">
+      <div class="level-item">
         <div
         id="grid"
         class="board"
@@ -56,7 +56,7 @@
           <div
           v-for="col in board.columns"
           :key="`column-${col - 1}`">
-            <div 
+            <span 
             class="cell"
             @click="handleCellClick"
             v-for="row in board.rows"
@@ -68,7 +68,7 @@
               cells[col - 1][row - 1].wasActive && showDeath ? deathStyle(): '',
               cells[col - 1][row - 1].isActive ? activeStyle() : '', 
               cells[col - 1][row - 1].isNewBorn && showNewBorn ? newBornStyle() : ''
-            ]"></div>
+            ]"></span>
           </div>
         </div>
       </div>

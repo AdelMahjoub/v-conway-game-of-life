@@ -85,3 +85,20 @@ export function nextCycleIsDifferent(currentCycle, nextCycle) {
   }
   return changes > 0;
 }
+
+export function animate(context) {
+  context.commit('setTimer', requestAnimationFrame(() => {
+    animate(context);
+  }));
+  const next = nextCycle(context.state.cells)
+  context.commit('decrementThrottle');
+  if(nextCycleIsDifferent(context.state.cells, next)) {
+    if(context.state.currentThrottle <= 0) {
+      context.commit('setCells', next);
+      context.commit('incrementCycles');
+      context.commit('resetThrottle');
+    }
+  } else {
+    context.commit('clearTimer');
+  }
+}

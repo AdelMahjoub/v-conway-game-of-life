@@ -51,15 +51,14 @@
       <div class="level-item">
         <div class="field">
           <div class="control has-text-centered">
-            <label class="label is-small">Fps</label>
+            <label class="label is-small">Throttle</label>
             <input
-            @input="handleFps"
-            :value="fps"
-            :disabled="timerId"
-            min="1"
-            max="60"
+            @input="handleThrottle"
+            :value="initialThrottle"
+            min="0"
+            max="12"
             type="range">
-            <label class="label is-small">{{ fps }}</label>
+            <label class="label is-small">{{ initialThrottle }}</label>
           </div>
         </div>
       </div>
@@ -76,8 +75,8 @@ export default {
   computed: {
     ... mapGetters([ 
       'board',
-      'fps',
-      'timerId'
+      'timerId',
+      'initialThrottle'
     ]),
   },
   methods: {
@@ -87,7 +86,7 @@ export default {
       'clearCells',
       'play',
       'stop',
-      'setFps'
+      'setThrottle'
     ]),
     handleRandomizeClick() {
       this.randomizeCells();
@@ -97,9 +96,9 @@ export default {
       const value = parseInt(e.target.value, 10);
       this.setSizes(Object.assign({}, this.board, {[name]: value}));
     },
-    handleFps(e) {
-      const fps = parseInt(e.target.value, 10);
-      this.setFps(fps);
+    handleThrottle(e) {
+      const throttle = parseInt(e.target.value, 10);
+      this.setThrottle(throttle);
     }
   },
   mounted() {
@@ -110,6 +109,9 @@ export default {
       const widthMax = this.$el.offsetWidth;
       this.setSizes(Object.assign({}, this.board, { widthMax }));
     });
+
+    this.randomizeCells();
+    this.play();
   }
 }
 </script>

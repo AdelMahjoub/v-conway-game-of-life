@@ -33,6 +33,8 @@ export default {
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css?family=Audiowide');
+  
   ::-webkit-scrollbar {
       width: 6px;
   }

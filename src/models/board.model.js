@@ -2,12 +2,12 @@ import Cell from './cell.model';
 
 export default class Board {
   constructor(props = {}) {
-    this.width = props['width'] || 720;
-    this.height = 360;
-    this.cellSize = 18;
+    this.width = props['width'] || 600;
+    this.height = 400;
+    this.cellSize = 20;
     this.columns = ~~(this.width / this.cellSize);
     this.rows = ~~(this.height / this.cellSize);
-    this.widthMax = props['widthMax'] ? Math.min(720, props['widthMax']) : 720;
+    this.widthMax = props['widthMax'] ? Math.min(600, props['widthMax']) : 600;
     this.widthMin = 320;
   }
 

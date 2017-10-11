@@ -3,7 +3,7 @@
     <div class="container is-fluid">
       <div class="navbar-brand">
         <a href="/" class="navbar-item">
-          <span>V-Conway</span>
+          <span id="brand">V-Conway</span>
         </a>
         <div
         @click="menuIsOpen = !menuIsOpen"
@@ -51,5 +51,7 @@ export default {
 </script>
 
 <style scoped>
-
+  #brand {
+    font-family: 'Audiowide', cursive;
+  }
 </style>

@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import Board from '../models/board.model';
 import Cell from '../models/cell.model';
 
-import { getNeighbours, cloneCells, nextCycle, nextCycleIsDifferent } from './utils';
+import { getNeighbours, cloneCells, nextCycle, nextCycleIsDifferent, animate } from './utils';
 
 Vue.use(Vuex);
 
@@ -15,7 +15,8 @@ const store = new Vuex.Store({
     cells: (new Board()).generateCells(),
     cycles: 0,
     timerId: null,
-    fps: 15
+    initialThrottle: 0,
+    currentThrottle: 0
   },
   getters: {
     board: state => {
@@ -23,6 +24,12 @@ const store = new Vuex.Store({
     },
     cells: state => {
       return state.cells
+    },
+    cell: state => ({x, y}) => {
+      return state.cells[x][y];
+    },
+    cellSize: state => {
+      return state.board.cellSize;
     },
     timerId: state => {
       return state.timerId;
@@ -63,8 +70,8 @@ const store = new Vuex.Store({
           }, 0)
       )
     },
-    fps: state => {
-      return state.fps;
+    initialThrottle: state => {
+      return state.initialThrottle;
     }
   },
   mutations: {
@@ -88,15 +95,21 @@ const store = new Vuex.Store({
     setCells: (state, cells) => {
       state.cells = cells;
     },
-    setFps: (state, fps) => {
-      state.fps = fps;
+    setThrottle: (state, value) => {
+      state.initialThrottle = value;
+    },
+    decrementThrottle: (state, value) => {
+      state.currentThrottle--;
+    },
+    resetThrottle: state => {
+      state.currentThrottle = state.initialThrottle;
     },
     setTimer: (state, id) => {
       state.timerId = id;
     },
     clearTimer: state => {
       if(state.timerId) {
-        clearInterval(state.timerId);
+        cancelAnimationFrame(state.timerId);
         state.timerId = null;
       }
     },
@@ -121,8 +134,14 @@ const store = new Vuex.Store({
     setCells: (context, cells) => {
       context.commit('setCells', cells)
     },
-    setFps: (context, fps) => {
-      context.commit('setFps', fps);
+    setThrottle: (context, value) => {
+      context.commit('setThrottle', value);
+    },
+    decrementThrottle: context => {
+      context.commit('decrementThrottle');
+    },
+    resetThrottle: context => {
+      context.commit('resetThrottle');
     },
     setTimer: (context, id) => {
       context.commit('setTimer', id);
@@ -139,18 +158,7 @@ const store = new Vuex.Store({
     },
     play: context => {
       if(!context.state.timerId) {
-        let timer = setInterval(() => {
-          const next = nextCycle(context.state.cells)
-          if(nextCycleIsDifferent(context.state.cells, next)) {
-            context.commit('setCells', next);
-            context.commit('incrementCycles');
-          } else {
-            clearInterval(timer);
-            timer = null
-            context.commit('clearTimer');
-          }
-        }, ~~(1000/context.state.fps));
-        context.commit('setTimer', timer);
+        animate(context);
       }
     },
     stop: context => {
