@@ -33,5 +33,10 @@ export default {
 </script>
 
 <style>
-  
+  ::-webkit-scrollbar {
+      width: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #999;
+  }
 </style>
